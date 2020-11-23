@@ -1,0 +1,60 @@
+{% extends "otree_redwood/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Your Choice
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{% static 'investment_game/leeps-invest/leeps-invest.js' %}"></script>
+    <!-- Import the redwood-decision and redwood-period webcomponents. -->
+    <script type="module" src="/static/otree-redwood/src/redwood-channel/redwood-channel.js"></script>
+    <script type="module" src="/static/otree-redwood/src/redwood-period/redwood-period.js"></script>
+    <script type="module" src="/static/otree-redwood/src/otree-constants/otree-constants.js"></script>
+    
+    <script>
+    let invested = false;
+    var channel = document.querySelector("redwood-channel");
+    var button = document.querySelector(".otree-btn-next");
+    var constants = document.getElementById('constants');
+
+    button.textContent = "Invest";
+
+    button.addEventListener('click', function(event) {
+        if(invested == true) return;
+        invested = true;
+        let investing = {
+            'id': constants.idInGroup,
+            'pcode': constants.participantCode,
+        };
+        console.log("Invested");
+        channel.send(investing);
+    });
+    
+    channel.addEventListener("event", function(event) {
+        invested = true;
+        console.log("Someone Invested");
+        button.click();
+    });
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+    </style>
+    <redwood-channel channel="invest"></redwood-channel>
+    <otree-constants id="constants"></otree-constants>
+    {% with config=subsession.config %}
+        <leeps-invest
+            period-length='{{ config.duration }}'
+            num-players='{{ player.num_players }}'
+            round-number='{{ subsession.round_number }}'
+            y='{{config.Y}}'
+            cost='{{config.cost}}'
+            z='{{config.Z}}'
+        ></leeps-invest>
+    {% endwith %}
+    {% next_button %}
+
+{% endblock %}
