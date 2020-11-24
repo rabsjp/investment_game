@@ -10,6 +10,9 @@ import csv
 import random
 import math
 import otree.common
+import time
+import datetime
+
 
 doc = """
 This is a Lines Queueing project
@@ -82,6 +85,7 @@ class Subsession(BaseSubsession):
 
 class Group(RedwoodGroup):
     invested = models.IntegerField(initial=-1)
+    investment_time = models.FloatField()
 
     def period_length(self):
         return parse_config(self.session.config['config_file'])[self.round_number-1]['duration']
@@ -102,6 +106,7 @@ class Group(RedwoodGroup):
 
     def _on_invest_event(self, event=None, **kwargs):
         if self.invested == -1:
+            self.investment_time = (datetime.datetime.now(datetime.timezone.utc) - self.get_start_time()).total_seconds()
             print("Investment")
             self.invested = int(event.value['id'])
             self.send('invest', event.value)

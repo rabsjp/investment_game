@@ -107,10 +107,12 @@ export class LeepsInvest extends PolymerElement {
 
     _invest(){
         if(this.invested == true) return;
+        let time = this._subperiodProgress;
         this.invested = true;
         let investing = {
             'id': this.$.constants.idInGroup,
             'pcode': this.$.constants.participantCode,
+            'time': time,
         };
         console.log("Invested");
         this.$.channel.send(investing);
