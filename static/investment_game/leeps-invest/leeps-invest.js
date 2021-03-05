@@ -18,8 +18,16 @@ export class LeepsInvest extends PolymerElement {
             <style include="iron-flex iron-flex-alignment"></style>
             <style>
                 paper-progress {
-                    margin-bottom: 10px;
                     --paper-progress-height: 30px;
+                    margin:0 auto;
+                    display:block;
+                    margin-bottom: 30px;
+                }
+                .h1{
+                    margin:0 auto;
+                    display:block;
+                    margin-bottom: 35px;
+                    text-align: center;
                 }
             </style>
             <otree-constants id="constants"></otree-constants>
@@ -28,7 +36,11 @@ export class LeepsInvest extends PolymerElement {
                 on-period-start="_onPeriodStart"
                 on-period-end="_onPeriodEnd">
             </redwood-period>
-            <h1>
+            <h1 style="
+                    margin:0 auto;
+                    display:block;
+                    margin-bottom: 35px;
+                    text-align: center;">
                 Round: {{roundNumber}}
             </h1>
             <!--
@@ -89,7 +101,7 @@ export class LeepsInvest extends PolymerElement {
         console.log(this.z);
         this.set("invested", false);
         /*
-        this.$.button.addEventListener("click", 
+        this.$.button.addEventListener("click",
             () => {
                 if(this.invested == true) return;
                 this.invested = true;
@@ -102,7 +114,7 @@ export class LeepsInvest extends PolymerElement {
             }
         );
         */
-        
+
     }
 
     _invest(){
@@ -151,8 +163,8 @@ export class LeepsInvest extends PolymerElement {
         }
     }
 
-    
-    
+
+
 }
 
 window.customElements.define('leeps-invest', LeepsInvest);

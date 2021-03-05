@@ -27,6 +27,14 @@ class Decision(Page):
     def is_displayed(self):
         return self.subsession.config is not None
 
+    def vars_for_template(self):
+        return {
+            'tiempo': self.group.period_length(),
+            'nadie': self.group.z_value(),
+            'alguien': self.group.y_value(),
+            'voluntario': self.group.y_value() - self.group.cost()
+
+        }
 
 class ResultsWaitPage(WaitPage):
     wait_for_all_groups = True
@@ -49,7 +57,9 @@ class Results(Page):
         payoffs = []
 
         for i in range(1, self.round_number + 1):
-            payoffs.append({'index': i, 'payoff': self.player.in_round(i).payoff})
+            payoffs.append({'index': i, 'payoff': self.player.in_round(i).payoff,
+                            'group_inv': 'yes' if self.group.in_round(i).invested != -1 else 'no',
+                            'you_inv': 'yes' if self.group.in_round(i).invested == self.player.in_round(i).id_in_group else 'no'})
         
         print(payoffs)
 

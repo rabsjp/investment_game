@@ -34,6 +34,7 @@ def parse_config(config_file):
         rounds.append({
             'round_number': int(row['round_number']),
             'duration': int(row['duration']),
+            'num_silos': int(row['num_silos']),
             'shuffle_role': True if row['shuffle_role'] == 'TRUE' else False,
             'players_per_group': int(row['players_per_group']),
             'Y': int(row['Y']),
@@ -41,6 +42,16 @@ def parse_config(config_file):
             'Z': int(row['Z']),
         })
     return rounds
+
+def shifter(m):
+    a = [[i.id_in_subsession for i in l] for l in m]
+    random.shuffle(a)
+
+    for i in a:
+        random.shuffle(i)
+        b = [[x[2], y[1], z[0]] for x, y, z in zip(a, a[1:] + a[:1], a[2:] + a[:2])]
+    return b
+
 
 class Subsession(BaseSubsession):
     def num_rounds(self):
@@ -71,7 +82,12 @@ class Subsession(BaseSubsession):
                 silo_matrix.append(silo[i:i+ppg])
             group_matrix.extend(otree.common._group_randomly(silo_matrix, fixed_id_in_group))
         self.set_group_matrix(group_matrix)
-    
+
+        if self.round_number > 1:
+            prev_matrix = self.in_round(self.round_number - 1).get_group_matrix()
+            self.set_group_matrix(shifter(prev_matrix))
+
+
     def set_payoffs(self):
         for g in self.get_groups():
             g.set_payoffs()
@@ -124,7 +140,7 @@ class Player(BasePlayer):
     def set_payoff(self,invested):
         if invested == -1:
             self.payoff = self.group.z_value()
-            print("Noone Invested: ", self.payoff)
+            print("No one Invested: ", self.payoff)
         elif invested == self.id_in_group:
             self.payoff = self.group.y_value() - self.group.cost()
             print("I Invested: ", self.payoff)
