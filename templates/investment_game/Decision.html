@@ -11,7 +11,7 @@
     <script type="module" src="/static/otree-redwood/src/redwood-channel/redwood-channel.js"></script>
     <script type="module" src="/static/otree-redwood/src/redwood-period/redwood-period.js"></script>
     <script type="module" src="/static/otree-redwood/src/otree-constants/otree-constants.js"></script>
-    
+
     <script>
     let invested = false;
     var channel = document.querySelector("redwood-channel");
@@ -19,6 +19,8 @@
     var constants = document.getElementById('constants');
 
     button.textContent = "Invest";
+    button.style.margin = "0 auto";
+    button.style.display = "block";
 
     button.addEventListener('click', function(event) {
         if(invested == true) return;
@@ -30,7 +32,7 @@
         console.log("Invested");
         channel.send(investing);
     });
-    
+
     channel.addEventListener("event", function(event) {
         invested = true;
         console.log("Someone Invested");
@@ -41,8 +43,24 @@
 {% endblock %}
 
 {% block content %}
-    <style>
+  <style>
+          button{
+            margin: 0 auto;
+            display: block;
+        }
     </style>
+
+You have been randomly paired with two participants.
+
+You have {{tiempo}} seconds to decide whether you want to invest.
+
+If no member of your group invests, then you will each make {{nadie}}.
+
+If a member of your group invests, then that member wil earn {{voluntario}}, and the other two group members will make {{alguien}} each.
+
+
+
+
     <redwood-channel channel="invest"></redwood-channel>
     <otree-constants id="constants"></otree-constants>
     {% with config=subsession.config %}

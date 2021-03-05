@@ -7,18 +7,23 @@
 
 {% block content %}
 
-    <div>Your payoff in this round: {{ player.payoff }} </div>
+    <div>Your payoff in this round: {{player.payoff}} </div>
 
     <table class="table" style="margin-top:20px; margin-bottom:10px">
         <th>
             <td>Round</td>
             <td>Payoff</td>
+            <td>Someone Invested</td>
+            <td>You Invested</td>
         </th>
         {% for item in payoffs %}
             <tr>
                 <td></td>
                 <td>{{ item.index }}</td>
                 <td>{{ item.payoff }}</td>
+                <td>{{ item.group_inv}}</td>
+                <td>{{ item.you_inv}}</td>
+
             </tr>
         {% endfor %}
                 
