@@ -58,8 +58,8 @@ class Results(Page):
 
         for i in range(1, self.round_number + 1):
             payoffs.append({'index': i, 'payoff': self.player.in_round(i).payoff,
-                            'group_inv': 'yes' if self.group.in_round(i).invested != -1 else 'no',
-                            'you_inv': 'yes' if self.group.in_round(i).invested == self.player.in_round(i).id_in_group else 'no'})
+                            'group_inv': 'yes' if self.player.in_round(i).payoff != self.group.z_value() else 'no',
+                            'you_inv': 'yes' if self.player.in_round(i).payoff == (self.group.y_value()-self.group.cost()) else 'no'})
         
         print(payoffs)
 

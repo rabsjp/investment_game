@@ -146,4 +146,4 @@ class Player(BasePlayer):
             print("I Invested: ", self.payoff)
         else:
             self.payoff = self.group.y_value()
-            print("Someoe Invested: ", self.payoff)
+            print("Someone Invested: ", self.payoff)
